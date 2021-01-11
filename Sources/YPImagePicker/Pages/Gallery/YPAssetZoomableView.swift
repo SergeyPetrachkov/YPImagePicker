@@ -178,22 +178,30 @@ final class YPAssetZoomableView: UIScrollView {
     }
     
     /// Calculate zoom scale which will fit the image to square
-    fileprivate func calculateSquaredZoomScale() -> CGFloat {
+  fileprivate func calculateSquaredZoomScale() -> CGFloat {
         guard let image = assetImageView.image else {
             print("YPAssetZoomableView >>> No image"); return 1.0
         }
         
-        var squareZoomScale: CGFloat = 1.0
+        var adjustedZoomScale: CGFloat = 1.0
         let w = image.size.width
         let h = image.size.height
         
         if w > h { // Landscape
-            squareZoomScale = (w / h)
+          let ratio = w / h
+          let desiredRatio: CGFloat = 1.5
+          if ratio == desiredRatio {
+            adjustedZoomScale = ratio
+          } else {
+            adjustedZoomScale = ratio / desiredRatio
+          }
         } else if h > w { // Portrait
-            squareZoomScale = (h / w)
+            adjustedZoomScale = (h / w)
+        } else {
+          adjustedZoomScale = w / h
         }
         
-        return squareZoomScale
+        return adjustedZoomScale
     }
     
     // Centring the image frame
@@ -250,9 +258,9 @@ extension YPAssetZoomableView: UIScrollViewDelegate {
         guard let view = view, view == photoImageView || view == videoView else { return }
         
         // prevent to zoom out
-        if YPConfig.library.onlySquare && scale < squaredZoomScale {
+//        if YPConfig.library.onlySquare && scale < squaredZoomScale {
             self.fitImage(true, animated: true)
-        }
+//        }
         
         myDelegate?.ypAssetZoomableViewScrollViewDidEndZooming()
         cropAreaDidChange()

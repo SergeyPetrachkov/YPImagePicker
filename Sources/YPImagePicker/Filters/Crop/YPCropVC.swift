@@ -63,12 +63,11 @@ class YPCropVC: UIViewController {
     }
     
     func setupGestureRecognizers() {
-      if YPConfig.cropGestures == .all {
-        // Pinch Gesture
-        pinchGR.addTarget(self, action: #selector(pinch(_:)))
-        pinchGR.delegate = self
-        v.imageView.addGestureRecognizer(pinchGR)
-      }
+
+      // Pinch Gesture
+      pinchGR.addTarget(self, action: #selector(pinch(_:)))
+      pinchGR.delegate = self
+      v.imageView.addGestureRecognizer(pinchGR)
       // Pan Gesture
       panGR.addTarget(self, action: #selector(pan(_:)))
       panGR.delegate = self

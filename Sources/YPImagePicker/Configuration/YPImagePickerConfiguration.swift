@@ -112,9 +112,6 @@ public struct YPImagePickerConfiguration {
     /// Defines the max camera zoom factor for camera. Disable camera zoom with 1. Default is 1.
     public var maxCameraZoomFactor: CGFloat = 1.0
 
-    /// If `all`, then you can pinch and pan thumbnail to crop, otherwise only pan
-    public var cropGestures: YPCropGesturesConfig = .all
-    
     /// List of default filters which will be added on the filter screen
     public var filters: [YPFilter] = [
         YPFilter(name: "Normal", applier: nil),
@@ -289,9 +286,4 @@ public enum YPlibraryMediaType {
     case photo
     case video
     case photoAndVideo
-}
-
-public enum YPCropGesturesConfig {
-  case all
-  case panOnly
 }
