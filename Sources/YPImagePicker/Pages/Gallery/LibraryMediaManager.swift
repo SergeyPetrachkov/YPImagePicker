@@ -76,6 +76,11 @@ class LibraryMediaManager {
                                           cropRect: CGRect,
                                           duration: CMTime?,
                                           callback: @escaping (_ videoURL: URL?) -> Void) {
+      var adjustedCropRect = cropRect
+      if cropRect.width / cropRect.height - 1 < 0.1 {
+        // it's square!
+        adjustedCropRect.size = CGSize(width: adjustedCropRect.width, height: adjustedCropRect.width)
+      }
         let videosOptions = PHVideoRequestOptions()
         videosOptions.isNetworkAccessAllowed = true
         videosOptions.deliveryMode = .highQualityFormat
@@ -112,8 +117,8 @@ class LibraryMediaManager {
                 let videoSize = videoTrack.naturalSize.applying(transform)
                 transform.tx = (videoSize.width < 0) ? abs(videoSize.width) : 0.0
                 transform.ty = (videoSize.height < 0) ? abs(videoSize.height) : 0.0
-                transform.tx -= cropRect.minX
-                transform.ty -= cropRect.minY
+                transform.tx -= adjustedCropRect.minX
+                transform.ty -= adjustedCropRect.minY
                 layerInstructions.setTransform(transform, at: CMTime.zero)
                 
                 // CompositionInstruction
@@ -124,7 +129,7 @@ class LibraryMediaManager {
                 // Video Composition
                 let videoComposition = AVMutableVideoComposition(propertiesOf: asset)
                 videoComposition.instructions = [mainInstructions]
-                videoComposition.renderSize = cropRect.size // needed?
+                videoComposition.renderSize = adjustedCropRect.size // needed?
                 
                 // 5. Configuring export session
                 
