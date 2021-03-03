@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17125"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,8 +16,37 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Cu-Zp-X0j">
                     <rect key="frame" x="0.0" y="0.0" width="400" height="550"/>
                     <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4f5-Fo-jhr" userLabel="InfoPanel">
+                            <rect key="frame" x="0.0" y="400" width="400" height="45"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recents" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3bU-pf-JdP">
+                                    <rect key="frame" x="16" y="13" width="61.5" height="19.5"/>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select multiple for superset/circuit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1MZ-rC-WEj">
+                                    <rect key="frame" x="85.5" y="11" width="209" height="23"/>
+                                    <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="209" id="nnU-Ju-uJf"/>
+                                        <constraint firstAttribute="height" constant="23" id="wzQ-Rg-Jz4"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="1MZ-rC-WEj" firstAttribute="centerY" secondItem="3bU-pf-JdP" secondAttribute="centerY" id="5y0-A5-eEI"/>
+                                <constraint firstItem="3bU-pf-JdP" firstAttribute="centerY" secondItem="4f5-Fo-jhr" secondAttribute="centerY" id="NTT-Ho-woB"/>
+                                <constraint firstAttribute="height" constant="45" id="Q8y-cG-7fY"/>
+                                <constraint firstItem="1MZ-rC-WEj" firstAttribute="leading" secondItem="3bU-pf-JdP" secondAttribute="trailing" constant="8" id="a3n-ha-tYU"/>
+                                <constraint firstItem="3bU-pf-JdP" firstAttribute="leading" secondItem="4f5-Fo-jhr" secondAttribute="leading" constant="16" id="u66-Cs-70P"/>
+                            </constraints>
+                        </view>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="6id-Ro-HHC">
-                            <rect key="frame" x="0.0" y="400" width="400" height="150"/>
+                            <rect key="frame" x="0.0" y="445" width="400" height="105"/>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="1" minimumInteritemSpacing="1" id="jnu-mn-3OB">
                                 <size key="itemSize" width="60" height="60"/>
@@ -29,9 +58,13 @@
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
+                        <constraint firstItem="4f5-Fo-jhr" firstAttribute="leading" secondItem="9Cu-Zp-X0j" secondAttribute="leading" id="AHL-6g-HgI"/>
+                        <constraint firstAttribute="trailing" secondItem="4f5-Fo-jhr" secondAttribute="trailing" id="GKI-xW-Mai"/>
                         <constraint firstAttribute="bottom" secondItem="6id-Ro-HHC" secondAttribute="bottom" id="H2u-OW-Xid"/>
-                        <constraint firstAttribute="trailing" secondItem="6id-Ro-HHC" secondAttribute="trailing" id="fKl-55-Q4t"/>
+                        <constraint firstAttribute="trailing" secondItem="6id-Ro-HHC" secondAttribute="trailing" id="k4X-xe-ii2"/>
                         <constraint firstItem="6id-Ro-HHC" firstAttribute="leading" secondItem="9Cu-Zp-X0j" secondAttribute="leading" id="l5I-IF-1rx"/>
+                        <constraint firstItem="4f5-Fo-jhr" firstAttribute="width" secondItem="9Cu-Zp-X0j" secondAttribute="width" id="sRL-6n-W4l"/>
+                        <constraint firstItem="6id-Ro-HHC" firstAttribute="top" secondItem="4f5-Fo-jhr" secondAttribute="bottom" id="xGJ-UX-4In"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="90B-0c-ych" userLabel="Image Crop View Container" customClass="YPAssetViewContainer" customModule="YPImagePicker">
@@ -56,13 +89,13 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="6id-Ro-HHC" firstAttribute="top" secondItem="Mc5-1c-z7q" secondAttribute="bottom" id="2VS-x4-Kjb"/>
                 <constraint firstAttribute="trailing" secondItem="90B-0c-ych" secondAttribute="trailing" id="7re-q7-aoD"/>
                 <constraint firstAttribute="bottom" secondItem="9Cu-Zp-X0j" secondAttribute="bottom" id="94b-v2-S3a"/>
                 <constraint firstItem="90B-0c-ych" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Nqq-tJ-MXy"/>
                 <constraint firstAttribute="trailing" secondItem="9Cu-Zp-X0j" secondAttribute="trailing" id="Uhw-Pi-jJn"/>
                 <constraint firstItem="9Cu-Zp-X0j" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="gu4-5B-2qu"/>
                 <constraint firstItem="90B-0c-ych" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="u5j-7G-j99"/>
+                <constraint firstItem="4f5-Fo-jhr" firstAttribute="top" secondItem="90B-0c-ych" secondAttribute="bottom" id="uhE-Uc-mIB"/>
                 <constraint firstItem="9Cu-Zp-X0j" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="zCK-Xd-fZp"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
