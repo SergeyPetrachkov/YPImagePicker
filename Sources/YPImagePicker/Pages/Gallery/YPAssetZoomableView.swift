@@ -186,7 +186,7 @@ final class YPAssetZoomableView: UIScrollView {
         var adjustedZoomScale: CGFloat = 1.0
         let w = image.size.width
         let h = image.size.height
-        
+
         if w > h { // Landscape
           let ratio = w / h
           let desiredRatio: CGFloat = 1.5
