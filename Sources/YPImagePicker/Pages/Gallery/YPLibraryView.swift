@@ -18,6 +18,8 @@ final class YPLibraryView: UIView {
     @IBOutlet weak var assetZoomableView: YPAssetZoomableView!
     @IBOutlet weak var assetViewContainer: YPAssetViewContainer!
     @IBOutlet weak var assetViewContainerConstraintTop: NSLayoutConstraint!
+    @IBOutlet weak var recentsLabel: UILabel!
+    @IBOutlet weak var setsLabel: UILabel!
     
     let maxNumberWarningView = UIView()
     let maxNumberWarningLabel = UILabel()
@@ -41,6 +43,12 @@ final class YPLibraryView: UIView {
         
         setupMaxNumberOfItemsView()
         setupProgressBarView()
+
+      self.recentsLabel.text = YPConfig.recentsTitle
+      self.setsLabel.text = YPConfig.setsTitle
+      self.setsLabel.isHidden = !YPConfig.shouldShowSetsTitle
+      self.setsLabel.layer.cornerRadius = 8
+      self.setsLabel.clipsToBounds = true
     }
     
     /// At the bottom there is a view that is visible when selected a limit of items with multiple selection

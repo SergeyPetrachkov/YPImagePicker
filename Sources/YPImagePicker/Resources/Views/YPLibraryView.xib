@@ -20,16 +20,16 @@
                             <rect key="frame" x="0.0" y="400" width="400" height="45"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recents" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3bU-pf-JdP">
-                                    <rect key="frame" x="16" y="13" width="61.5" height="19.5"/>
+                                    <rect key="frame" x="16" y="19.5" width="61.5" height="19.5"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select multiple for superset/circuit" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1MZ-rC-WEj">
-                                    <rect key="frame" x="85.5" y="11" width="209" height="23"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select multiple for superset/circuit" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1MZ-rC-WEj">
+                                    <rect key="frame" x="85.5" y="18" width="220" height="23"/>
                                     <color key="backgroundColor" red="0.96470588235294119" green="0.96470588235294119" blue="0.96470588235294119" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="209" id="nnU-Ju-uJf"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="220" id="nnU-Ju-uJf"/>
                                         <constraint firstAttribute="height" constant="23" id="wzQ-Rg-Jz4"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -39,8 +39,8 @@
                             </subviews>
                             <constraints>
                                 <constraint firstItem="1MZ-rC-WEj" firstAttribute="centerY" secondItem="3bU-pf-JdP" secondAttribute="centerY" id="5y0-A5-eEI"/>
-                                <constraint firstItem="3bU-pf-JdP" firstAttribute="centerY" secondItem="4f5-Fo-jhr" secondAttribute="centerY" id="NTT-Ho-woB"/>
                                 <constraint firstAttribute="height" constant="45" id="Q8y-cG-7fY"/>
+                                <constraint firstAttribute="bottom" secondItem="3bU-pf-JdP" secondAttribute="bottom" constant="6" id="SKx-F2-7zZ"/>
                                 <constraint firstItem="1MZ-rC-WEj" firstAttribute="leading" secondItem="3bU-pf-JdP" secondAttribute="trailing" constant="8" id="a3n-ha-tYU"/>
                                 <constraint firstItem="3bU-pf-JdP" firstAttribute="leading" secondItem="4f5-Fo-jhr" secondAttribute="leading" constant="16" id="u66-Cs-70P"/>
                             </constraints>
@@ -105,6 +105,8 @@
                 <outlet property="assetViewContainerConstraintTop" destination="u5j-7G-j99" id="FfD-fg-8ch"/>
                 <outlet property="assetZoomableView" destination="Mc5-1c-z7q" id="sGM-mc-f2B"/>
                 <outlet property="collectionView" destination="6id-Ro-HHC" id="NDT-3i-ayr"/>
+                <outlet property="recentsLabel" destination="3bU-pf-JdP" id="Fzc-JH-PDo"/>
+                <outlet property="setsLabel" destination="1MZ-rC-WEj" id="Vgz-LY-4n4"/>
             </connections>
             <point key="canvasLocation" x="142" y="147"/>
         </view>
