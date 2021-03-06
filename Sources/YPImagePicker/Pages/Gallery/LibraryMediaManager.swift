@@ -83,7 +83,7 @@ class LibraryMediaManager {
       }
         let videosOptions = PHVideoRequestOptions()
         videosOptions.isNetworkAccessAllowed = true
-        videosOptions.deliveryMode = .highQualityFormat
+        videosOptions.deliveryMode = .mediumQualityFormat
         imageManager?.requestAVAsset(forVideo: videoAsset, options: videosOptions) { asset, _, _ in
             do {
                 guard let asset = asset else { print("⚠️ PHCachingImageManager >>> Don't have the asset"); return }
