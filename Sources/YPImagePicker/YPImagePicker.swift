@@ -21,6 +21,7 @@ open class YPImagePicker: UINavigationController {
     return .portrait
   }
 
+  public var didInvokeClosing: (() -> Void)?
   private var _didFinishPicking: (([YPMediaItem], Bool) -> Void)?
   private var _didFailToPick: (() -> Void)?
 
@@ -109,12 +110,15 @@ extension YPImagePicker: YPPickerVCDelegate {
   func didClose() {
     print("\(#file).\(#function) \(#line) invoked")
     print("\(self)")
+    self.didInvokeClosing?()
     self.cancelled = true
     self._didFinishPicking?([], true)
   }
+
   func didFailToExportItems() {
     self._didFailToPick?()
   }
+
   func didSelectItems(items: [YPMediaItem]) {    
     if self.cancelled {
       self._didFinishPicking?([], true)
