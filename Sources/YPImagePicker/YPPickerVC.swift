@@ -315,13 +315,13 @@ open class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     // just commented it out
     // let's do useless work but keep working
     // instead of fucking freezing
-//    DispatchQueue.global(qos: .userInitiated).async {
+    DispatchQueue.global(qos: .userInitiated).async {
       if let libraryVC = self.libraryVC {
-//        libraryVC.mediaManager.forseCancelExporting()
-        libraryVC.mediaManager.resetCachedAssets()
+        libraryVC.mediaManager.forseCancelExporting()
+//        libraryVC.mediaManager.resetCachedAssets()
       }
       print("\(#line) passed")
-//    }
+    }
   }
 
   // When pressing "Next"

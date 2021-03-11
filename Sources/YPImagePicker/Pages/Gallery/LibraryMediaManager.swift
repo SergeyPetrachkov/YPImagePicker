@@ -212,7 +212,10 @@ class LibraryMediaManager {
   }
 
   func forseCancelExporting() {
+    YPConfig.cancelLogHandler?(self.currentExportSessions)
+    print("Cancel \(self.currentExportSessions.count) sessions")
     for s in self.currentExportSessions {
+      print("Cancelling \(s) at: \(s.progress * 100) %")
       s.cancelExport()
     }
   }

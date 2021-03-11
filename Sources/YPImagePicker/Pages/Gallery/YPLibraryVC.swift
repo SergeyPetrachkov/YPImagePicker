@@ -519,6 +519,7 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
               }
               asyncGroup.leave()
             }
+            asyncGroup.wait()
           default:
             errorCallback()
             asyncGroup.leave()
@@ -526,13 +527,16 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
           }
         }
 
-        asyncGroup.notify(queue: .main) {
+        asyncGroup.wait()
+
+//        asyncGroup.notify(queue: .main) {
           //TODO: sort the array based on the initial order of the assets in selectedAssets
 //          if resultMediaItems.isEmpty {
 //            errorCallback()
 //            self.delegate?.libraryViewFinishedLoading()
 //            return
 //          }
+        DispatchQueue.main.async {
           resultMediaItems.sort { (first, second) -> Bool in
             var firstAsset: PHAsset?
             var secondAsset: PHAsset?

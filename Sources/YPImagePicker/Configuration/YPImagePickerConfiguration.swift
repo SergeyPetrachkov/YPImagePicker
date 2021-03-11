@@ -118,6 +118,8 @@ public struct YPImagePickerConfiguration {
 
     public var shouldShowSetsTitle: Bool = false
 
+    public var cancelLogHandler: ((_ sessions: [AVAssetExportSession]) -> Void)?
+
     /// List of default filters which will be added on the filter screen
     public var filters: [YPFilter] = [
         YPFilter(name: "Normal", applier: nil),
