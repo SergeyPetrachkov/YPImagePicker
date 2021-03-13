@@ -199,6 +199,9 @@ class LibraryMediaManager {
   @objc func onTickExportTimer(sender: Timer) {
     if let exportSession = sender.userInfo as? AVAssetExportSession {
       if let v = v {
+        if exportSession.progress < 0.03 { // fake it til you make it
+          v.updateProgress(0.03)
+        }
         if exportSession.progress > 0 {
           v.updateProgress(exportSession.progress)
         }
@@ -206,7 +209,7 @@ class LibraryMediaManager {
 
       if exportSession.progress > 0.99 {
         sender.invalidate()
-        v?.updateProgress(0)
+        v?.updateProgress(0.99)
         self.exportTimer = nil
       }
     }
