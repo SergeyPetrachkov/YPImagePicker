@@ -79,11 +79,12 @@ class LibraryMediaManager {
     var adjustedCropRect = cropRect
     if cropRect.width / cropRect.height - 1 < 0.1 {
       // it's square!
-      adjustedCropRect.size = CGSize(width: adjustedCropRect.width, height: adjustedCropRect.width)
+      let minDimension = min(cropRect.width, cropRect.height)
+      adjustedCropRect.size = CGSize(width: minDimension, height: minDimension)
     }
     let videosOptions = PHVideoRequestOptions()
     videosOptions.isNetworkAccessAllowed = true
-    videosOptions.deliveryMode = .mediumQualityFormat
+    videosOptions.deliveryMode = .highQualityFormat
     imageManager?.requestAVAsset(forVideo: videoAsset, options: videosOptions) { asset, _, _ in
       do {
         guard let asset = asset else {

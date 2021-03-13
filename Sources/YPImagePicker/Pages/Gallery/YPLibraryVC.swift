@@ -475,7 +475,7 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
         guard let asset = PHAsset
                 .fetchAssets(withLocalIdentifiers: [$0.assetIdentifier],
                              options: PHFetchOptions()).firstObject else { fatalError() }
-        return (asset, currentCrop)
+        return (asset, $0.cropRect ?? currentCrop)
       }
       self.selectedMedia = selectedAssets
 
