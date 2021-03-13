@@ -425,9 +425,9 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
   }
 
   private func fetchVideoAndApplySettings(for asset: PHAsset,
-                                          withCropRect rect: CGRect? = nil,
+                                          withCropRect rect: CGRect,//? = nil,
                                           callback: @escaping (_ videoURL: URL?) -> Void) {
-    let normalizedCropRect = rect ?? DispatchQueue.main.sync { v.currentCropRect() }
+    let normalizedCropRect = rect// ?? DispatchQueue.main.sync { v.currentCropRect() }
     let ts = targetSize(for: asset, cropRect: normalizedCropRect)
     let xCrop: CGFloat = normalizedCropRect.origin.x * CGFloat(asset.pixelWidth)
     let yCrop: CGFloat = normalizedCropRect.origin.y * CGFloat(asset.pixelHeight)
@@ -463,20 +463,115 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
                                                   callback: callback)
   }
 
+  var exportResult: [YPMediaItem] = []
+  var selectedMedia: [(asset: PHAsset, cropRect: CGRect)] = []
+  public func selectedMediaNewWay(photoCallback: @escaping (_ photo: YPMediaPhoto) -> Void,
+                                  videoCallback: @escaping (_ videoURL: YPMediaVideo) -> Void,
+                                  errorCallback: @escaping () -> Void,
+                                  multipleItemsCallback: @escaping (_ items: [YPMediaItem]) -> Void) {
+    let currentCrop = v.currentCropRect()
+    DispatchQueue.global(qos: .userInitiated).async {
+      var selectedAssets: [(asset: PHAsset, cropRect: CGRect)] = self.selection.map {
+        guard let asset = PHAsset
+                .fetchAssets(withLocalIdentifiers: [$0.assetIdentifier],
+                             options: PHFetchOptions()).firstObject else { fatalError() }
+        return (asset, currentCrop)
+      }
+      self.selectedMedia = selectedAssets
+
+      if self.selection.isEmpty {
+        errorCallback()
+        return
+      }
+
+      if self.selection.count > 1 {
+        func process() {
+          guard let first = self.selectedMedia.first else {
+            return
+          }
+
+          self.exportSingleMedia(first,
+                                 photoCallback: photoCallback,
+                                 videoCallback: { video in
+                                  self.exportResult.append(YPMediaItem.video(v: video))
+                                  self.selectedMedia.remove(at: 0)
+                                  if self.selectedMedia.isEmpty {
+                                    multipleItemsCallback(self.exportResult)
+                                    self.delegate?.libraryViewFinishedLoading()
+                                  } else {
+                                    process()
+                                  }
+                                 },
+                                 errorCallback: errorCallback)
+        }
+
+        process()
+      } else {
+        guard let first = selectedAssets.first else {
+          return errorCallback()
+        }
+        return self.exportSingleMedia(first,
+                                      photoCallback: photoCallback,
+                                      videoCallback: { video in
+                                        self.delegate?.libraryViewFinishedLoading()
+                                        videoCallback(video)
+                                      },
+                                      errorCallback: errorCallback)
+      }
+    }
+  }
+
+  fileprivate func exportSingleMedia(_ media: (asset: PHAsset, cropRect: CGRect),
+                                     photoCallback: @escaping (_ photo: YPMediaPhoto) -> Void,
+                                     videoCallback: @escaping (_ videoURL: YPMediaVideo) -> Void,
+                                     errorCallback: @escaping () -> Void) {
+    switch media.asset.mediaType {
+    case .audio, .unknown:
+      errorCallback()
+      return
+    case .video:
+      self.fetchVideoAndApplySettings(for: media.asset, withCropRect: media.cropRect, callback: { videoURL in
+        DispatchQueue.main.async {
+          if let videoURL = videoURL {
+            let video = YPMediaVideo(thumbnail: thumbnailFromVideoPath(videoURL),
+                                     videoURL: videoURL, asset: media.asset)
+            videoCallback(video)
+          } else {
+            print("YPLibraryVC -> selectedMedia -> Problems with fetching videoURL.")
+            errorCallback()
+          }
+        }
+      })
+    case .image:
+      self.fetchImageAndCrop(for: media.asset) { image, exifMeta in
+        DispatchQueue.main.async {
+          self.delegate?.libraryViewFinishedLoading()
+          let photo = YPMediaPhoto(image: image.resizedImageIfNeeded(),
+                                   exifMeta: exifMeta,
+                                   asset: media.asset)
+          photoCallback(photo)
+        }
+      }
+    @unknown default:
+      fatalError()
+    }
+  }
+
   public func selectedMedia(photoCallback: @escaping (_ photo: YPMediaPhoto) -> Void,
                             videoCallback: @escaping (_ videoURL: YPMediaVideo) -> Void,
                             errorCallback: @escaping () -> Void,
                             multipleItemsCallback: @escaping (_ items: [YPMediaItem]) -> Void) {
+    let cropRect = v.currentCropRect()
     DispatchQueue.global(qos: .userInitiated).async {
 
-      let selectedAssets: [(asset: PHAsset, cropRect: CGRect?)] = self.selection.map {
+      let selectedAssets: [(asset: PHAsset, cropRect: CGRect)] = self.selection.map {
         guard let asset = PHAsset.fetchAssets(withLocalIdentifiers: [$0.assetIdentifier],
                                               options: PHFetchOptions()).firstObject else { fatalError() }
-        return (asset, $0.cropRect)
+        return (asset, cropRect)
       }
 
       // Multiple selection
-      if self.multipleSelectionEnabled && self.selection.count > 1 {
+      if self.selection.count > 1 {
 
         // Check video length
         for asset in selectedAssets {
@@ -568,39 +663,13 @@ public class YPLibraryVC: UIViewController, YPPermissionCheckable {
           self.delegate?.libraryViewFinishedLoading()
         }
       } else {
-        let asset = selectedAssets.first!.asset
-        switch asset.mediaType {
-        case .audio, .unknown:
-          errorCallback()
-          return
-        case .video:
-          self.fetchVideoAndApplySettings(for: asset, callback: { videoURL in
-            DispatchQueue.main.async {
-              if let videoURL = videoURL {
-                self.delegate?.libraryViewFinishedLoading()
-                let video = YPMediaVideo(thumbnail: thumbnailFromVideoPath(videoURL),
-                                         videoURL: videoURL, asset: asset)
-                videoCallback(video)
-              } else {
-                print("YPLibraryVC -> selectedMedia -> Problems with fetching videoURL.")
-                errorCallback()
-              }
-            }
-          })
-        case .image:
-          self.fetchImageAndCrop(for: asset) { image, exifMeta in
-            DispatchQueue.main.async {
-              self.delegate?.libraryViewFinishedLoading()
-              let photo = YPMediaPhoto(image: image.resizedImageIfNeeded(),
-                                       exifMeta: exifMeta,
-                                       asset: asset)
-              photoCallback(photo)
-            }
-          }
-        @unknown default:
-          fatalError()
+        guard let first = selectedAssets.first else {
+          return errorCallback()
         }
-        return
+        return self.exportSingleMedia(first,
+                                      photoCallback: photoCallback,
+                                      videoCallback: videoCallback,
+                                      errorCallback: errorCallback)
       }
     }
   }
